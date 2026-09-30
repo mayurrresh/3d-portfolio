@@ -1,58 +1,30 @@
-export default function AboutPanel({
-  progress = 0,
-  side = "left",
-}) {
+export default function AboutPanel({ progress = 0, side = "left" }) {
   const start = 0.12;
   const end = 0.30;
 
-  const visible =
-    progress >= start &&
-    progress <= end;
+  const visible = progress >= start && progress <= end;
 
   const sectionProgress = Math.min(
     1,
-    Math.max(
-      0,
-      (progress - start) /
-        (end - start)
-    )
+    Math.max(0, (progress - start) / (end - start))
   );
 
-  const opacity =
-    Math.sin(sectionProgress * Math.PI);
-
-  /*
-    Position based on camera side.
-  */
+  const opacity = Math.sin(sectionProgress * Math.PI);
 
   const isLeft = side === "left";
-
-  const horizontalPosition = isLeft
-    ? {
-        left: "8%",
-        right: "auto",
-      }
-    : {
-        right: "8%",
-        left: "auto",
-      };
 
   const slideX = visible
     ? 0
     : isLeft
-      ? -40
-      : 40;
+      ? -35
+      : 35;
 
   const scrollToSkills = () => {
-    const el =
-      document.documentElement;
-
-    const maxScroll =
-      el.scrollHeight -
-      el.clientHeight;
+    const el = document.documentElement;
+    const maxScroll = el.scrollHeight - el.clientHeight;
 
     window.scrollTo({
-      top: maxScroll * 0.4,
+      top: maxScroll * 0.40,
       behavior: "smooth",
     });
   };
@@ -63,201 +35,229 @@ export default function AboutPanel({
       style={{
         position: "fixed",
 
-        ...horizontalPosition,
+        left: isLeft ? "clamp(32px, 8vw, 120px)" : "auto",
+        right: isLeft ? "auto" : "clamp(32px, 8vw, 120px)",
 
         top: "50%",
-
         transform: `
           translateY(-50%)
           translateX(${slideX}px)
         `,
 
-        width: "min(420px, 80vw)",
-
-        padding: "36px 32px",
+        width: "min(390px, 34vw)",
 
         zIndex: 15,
 
-        background:
-          "rgba(12, 14, 18, 0.72)",
-
-        backdropFilter:
-          "blur(24px) saturate(1.3)",
-
-        WebkitBackdropFilter:
-          "blur(24px) saturate(1.3)",
-
-        borderRadius: "16px",
-
-        border:
-          "1px solid rgba(215, 181, 109, 0.2)",
-
-        boxShadow:
-          "0 25px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03) inset",
+        opacity: visible ? opacity : 0,
+        pointerEvents: visible ? "auto" : "none",
 
         color: "#f1eee7",
 
-        opacity:
-          visible ? opacity : 0,
-
-        pointerEvents:
-          visible ? "auto" : "none",
-
         transition:
-          "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+          "opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+
+        fontFamily: "'Jost', sans-serif",
       }}
     >
-
-      {/* Decorative symbol */}
+      {/* SECTION MARKER */}
       <div
         style={{
-          position: "absolute",
-          top: "-20px",
-          left: "28px",
-
-          width: "40px",
-          height: "40px",
-
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          gap: "12px",
+          marginBottom: "20px",
         }}
       >
-        <svg
-          width="36"
-          height="36"
-          viewBox="0 0 36 36"
-          fill="none"
+        <span
+          style={{
+            display: "block",
+            width: "42px",
+            height: "1px",
+            background:
+              "linear-gradient(90deg, rgba(215,181,109,0.8), transparent)",
+          }}
+        />
+
+        <span
+          style={{
+            fontSize: "8px",
+            letterSpacing: "0.42em",
+            textTransform: "uppercase",
+            color: "rgba(215,181,109,0.85)",
+          }}
         >
-          <circle
-            cx="18"
-            cy="18"
-            r="16"
-            stroke="rgba(215,181,109,0.4)"
-            strokeWidth="1"
-          />
-
-          <circle
-            cx="18"
-            cy="18"
-            r="10"
-            stroke="rgba(215,181,109,0.25)"
-            strokeWidth="0.5"
-          />
-
-          <line
-            x1="18"
-            y1="2"
-            x2="18"
-            y2="34"
-            stroke="rgba(215,181,109,0.2)"
-            strokeWidth="0.5"
-          />
-
-          <line
-            x1="2"
-            y1="18"
-            x2="34"
-            y2="18"
-            stroke="rgba(215,181,109,0.2)"
-            strokeWidth="0.5"
-          />
-
-          <circle
-            cx="18"
-            cy="18"
-            r="3"
-            fill="rgba(215,181,109,0.5)"
-          />
-        </svg>
+          Identity
+        </span>
       </div>
 
-      {/* Title */}
+      {/* TITLE */}
       <h2
         style={{
-          margin: "8px 0 0 0",
+          margin: 0,
 
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
 
           fontSize:
-            "clamp(32px, 4vw, 42px)",
+            "clamp(48px, 5vw, 72px)",
 
           fontWeight: 400,
 
-          lineHeight: 1.1,
+          lineHeight: 0.9,
+
+          letterSpacing: "-0.025em",
+
+          color: "#f1eee7",
+
+          textShadow:
+            "0 6px 30px rgba(0,0,0,0.45)",
         }}
       >
-        About Me
+        About
       </h2>
 
-      {/* Divider */}
+      {/* SMALL DIVIDER */}
       <div
         style={{
-          width: "40px",
+          width: "100%",
           height: "1px",
 
-          background:
-            "linear-gradient(90deg, #d7b56d, transparent)",
+          marginTop: "24px",
 
-          margin: "20px 0",
+          background:
+            "linear-gradient(90deg, rgba(241,238,231,0.28), transparent)",
         }}
       />
 
-      {/* Description */}
+      {/* DESCRIPTION */}
       <p
         style={{
-          margin: 0,
+          margin: "22px 0 0",
 
-          fontFamily:
-            "'Jost', sans-serif",
+          maxWidth: "330px",
 
-          fontSize: "14px",
+          fontSize: "13px",
 
           fontWeight: 300,
 
-          lineHeight: 1.8,
+          lineHeight: 1.75,
 
           color:
-            "rgba(241, 238, 231, 0.7)",
+            "rgba(241,238,231,0.68)",
         }}
       >
-        A passionate developer who loves
-        turning ideas into interactive and
-        meaningful digital experiences. I
-        work across frontend, backend and
-        cloud — building products that are
-        practical, scalable and enjoyable
-        to use.
+        I'm a full stack developer who enjoys
+        building products that sit between
+        technology and experience.
       </p>
+
+      <p
+        style={{
+          margin: "12px 0 0",
+
+          maxWidth: "330px",
+
+          fontSize: "13px",
+
+          fontWeight: 300,
+
+          lineHeight: 1.75,
+
+          color:
+            "rgba(241,238,231,0.48)",
+        }}
+      >
+        From frontend interfaces to backend
+        systems and cloud infrastructure, I
+        like understanding how the whole
+        machine works.
+      </p>
+
+      {/* STATS */}
+      <div
+        style={{
+          display: "flex",
+          gap: "34px",
+          marginTop: "30px",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+              fontSize: "25px",
+              color: "#d7b56d",
+            }}
+          >
+            01
+          </div>
+
+          <div
+            style={{
+              marginTop: "3px",
+              fontSize: "7px",
+              letterSpacing: "0.3em",
+              textTransform: "uppercase",
+              color:
+                "rgba(241,238,231,0.42)",
+            }}
+          >
+            Developer
+          </div>
+        </div>
+
+        <div>
+          <div
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+              fontSize: "25px",
+              color: "#d7b56d",
+            }}
+          >
+            ∞
+          </div>
+
+          <div
+            style={{
+              marginTop: "3px",
+              fontSize: "7px",
+              letterSpacing: "0.3em",
+              textTransform: "uppercase",
+              color:
+                "rgba(241,238,231,0.42)",
+            }}
+          >
+            Curiosity
+          </div>
+        </div>
+      </div>
 
       {/* CTA */}
       <button
         type="button"
         onClick={scrollToSkills}
         style={{
-          marginTop: "24px",
+          marginTop: "34px",
 
-          padding: "12px 22px",
+          padding: 0,
 
-          background:
-            "rgba(215, 181, 109, 0.1)",
+          background: "transparent",
 
-          border:
-            "1px solid rgba(215, 181, 109, 0.4)",
+          border: "none",
 
-          borderRadius: "8px",
+          color: "#d7b56d",
 
-          color: "#f1eee7",
+          fontFamily: "'Jost', sans-serif",
 
-          fontFamily:
-            "'Outfit', sans-serif",
-
-          fontSize: "11px",
+          fontSize: "8px",
 
           fontWeight: 400,
 
-          letterSpacing: "2px",
+          letterSpacing: "0.32em",
+
+          textTransform: "uppercase",
 
           cursor: "pointer",
 
@@ -265,45 +265,29 @@ export default function AboutPanel({
 
           alignItems: "center",
 
-          gap: "10px",
-
-          transition:
-            "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background =
-            "rgba(215, 181, 109, 0.18)";
-
-          e.currentTarget.style.borderColor =
-            "rgba(215, 181, 109, 0.65)";
-
-          e.currentTarget.style.boxShadow =
-            "0 0 20px rgba(215, 181, 109, 0.1)";
-        }}
-
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background =
-            "rgba(215, 181, 109, 0.1)";
-
-          e.currentTarget.style.borderColor =
-            "rgba(215, 181, 109, 0.4)";
-
-          e.currentTarget.style.boxShadow =
-            "none";
+          gap: "12px",
         }}
       >
-        EXPLORE MY SKILLS
+        <span
+          style={{
+            width: "30px",
+            height: "1px",
+            background:
+              "rgba(215,181,109,0.7)",
+          }}
+        />
+
+        Explore my skills
 
         <span
           style={{
-            fontSize: "14px",
+            fontSize: "13px",
+            letterSpacing: 0,
           }}
         >
           →
         </span>
       </button>
-
     </div>
   );
 }

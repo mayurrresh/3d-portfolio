@@ -1,10 +1,14 @@
 export default function HeroPanel({ progress = 0 }) {
-  // Visible in the first ~10% of scroll, fades out
-  const opacity = progress < 0.02
-    ? 1
-    : progress < 0.10
-      ? 1 - ((progress - 0.02) / 0.08)
-      : 0;
+  /*
+    Hero is strongest at the beginning,
+    then gradually disappears as the journey begins.
+  */
+  const opacity =
+    progress < 0.02
+      ? 1
+      : progress < 0.12
+        ? 1 - (progress - 0.02) / 0.10
+        : 0;
 
   const visible = opacity > 0;
 
@@ -14,113 +18,412 @@ export default function HeroPanel({ progress = 0 }) {
       style={{
         position: "fixed",
         inset: 0,
+
         zIndex: 15,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
+
+        pointerEvents: visible
+          ? "auto"
+          : "none",
+
+        opacity: visible
+          ? opacity
+          : 0,
+
+        transition:
+          "opacity 0.45s ease",
+
         color: "#f1eee7",
-        opacity: visible ? opacity : 0,
-        pointerEvents: visible ? "auto" : "none",
-        transition: "opacity 0.3s ease",
+
+        fontFamily: "'Outfit', sans-serif",
       }}
     >
-      {/* Main name */}
-      <h1
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontSize: "clamp(42px, 7vw, 88px)",
-          fontWeight: 400,
-          lineHeight: 0.95,
-          margin: 0,
-          letterSpacing: "2px",
-          textShadow: "0 4px 30px rgba(0,0,0,0.5)",
-        }}
-      >
-        Mayuresh
-        <br />
-        Kahar
-      </h1>
+      {/* =====================================================
+          LEFT JOURNEY LABEL
+         ===================================================== */}
 
-      {/* Role */}
       <div
         style={{
-          fontFamily: "'Outfit', sans-serif",
-          fontSize: "clamp(10px, 1.3vw, 14px)",
-          fontWeight: 300,
-          letterSpacing: "6px",
-          marginTop: "20px",
-          color: "rgba(215, 181, 109, 0.85)",
-          textTransform: "uppercase",
-        }}
-      >
-        FULL STACK DEVELOPER
-      </div>
+          position: "absolute",
 
-      {/* Tagline */}
-      <p
-        style={{
-          fontFamily: "'Jost', sans-serif",
-          fontSize: "clamp(13px, 1.5vw, 16px)",
-          fontWeight: 300,
-          lineHeight: 1.7,
-          marginTop: "18px",
-          color: "rgba(241, 238, 231, 0.5)",
-          maxWidth: "380px",
-        }}
-      >
-        I build modern web experiences
-        <br />
-        that feel alive.
-      </p>
+          left: "clamp(24px, 5vw, 80px)",
+          top: "50%",
 
-      {/* Scroll CTA */}
-      <div
-        style={{
-          marginTop: "48px",
+          transform:
+            "translateY(-50%)",
+
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          gap: "12px",
-          animation: "scrollIndicatorBounce 2.5s ease-in-out infinite",
+
+          gap: "14px",
         }}
       >
-        {/* Mouse icon */}
+        {/* Vertical guide */}
+
         <div
           style={{
-            width: "24px",
-            height: "38px",
-            borderRadius: "12px",
-            border: "1.5px solid rgba(241, 238, 231, 0.35)",
             position: "relative",
-            display: "flex",
-            justifyContent: "center",
+
+            width: "1px",
+            height: "150px",
+
+            background:
+              "linear-gradient(" +
+              "180deg," +
+              "transparent," +
+              "rgba(215,181,109,0.55)," +
+              "rgba(215,181,109,0.15)," +
+              "transparent" +
+              ")",
           }}
         >
-          {/* Scroll dot */}
+          {/* Active marker */}
+
           <div
             style={{
-              width: "3px",
-              height: "8px",
-              borderRadius: "2px",
-              background: "rgba(215, 181, 109, 0.7)",
-              marginTop: "8px",
-              animation: "subtlePulse 2s ease-in-out infinite",
+              position: "absolute",
+
+              top: "0%",
+              left: "50%",
+
+              width: "7px",
+              height: "7px",
+
+              transform:
+                "translate(-50%, -50%)",
+
+              borderRadius: "50%",
+
+              background: "#d7b56d",
+
+              boxShadow:
+                "0 0 14px rgba(215,181,109,0.65)",
             }}
           />
         </div>
 
         <span
           style={{
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: "9px",
-            fontWeight: 300,
-            letterSpacing: "3px",
-            color: "rgba(241, 238, 231, 0.4)",
+            fontSize: "8px",
+
+            letterSpacing: "0.35em",
+
+            color:
+              "rgba(241,238,231,0.48)",
+
+            writingMode:
+              "vertical-rl",
+
+            textTransform:
+              "uppercase",
           }}
         >
-          SCROLL TO BEGIN
+          Intro
+        </span>
+      </div>
+
+      {/* =====================================================
+          IDENTITY BLOCK
+         ===================================================== */}
+
+      <div
+        style={{
+          position: "absolute",
+
+          right: "clamp(8%, 11vw, 15%)",
+
+          top: "50%",
+
+          transform:
+            "translateY(-50%)",
+
+          width:
+            "min(440px, 34vw)",
+
+          textAlign: "left",
+        }}
+      >
+        {/* Small eyebrow */}
+
+        <div
+          style={{
+            display: "flex",
+
+            alignItems: "center",
+
+            gap: "12px",
+
+            marginBottom: "18px",
+          }}
+        >
+          <span
+            style={{
+              width: "42px",
+              height: "1px",
+
+              background:
+                "rgba(215,181,109,0.65)",
+            }}
+          />
+
+          <span
+            style={{
+              fontSize: "8px",
+
+              letterSpacing:
+                "0.42em",
+
+              textTransform:
+                "uppercase",
+
+              color:
+                "rgba(215,181,109,0.85)",
+            }}
+          >
+            The journey begins
+          </span>
+        </div>
+
+        {/* =================================================
+            NAME
+           ================================================= */}
+
+        <h1
+          style={{
+            fontFamily:
+              "'Cormorant Garamond', Georgia, serif",
+
+            fontSize:
+              "clamp(54px, 6vw, 92px)",
+
+            fontWeight: 400,
+
+            lineHeight: 0.82,
+
+            letterSpacing:
+              "-0.025em",
+
+            margin: 0,
+
+            color: "#f1eee7",
+
+            textShadow:
+              "0 5px 35px rgba(0,0,0,0.55)",
+          }}
+        >
+          Mayuresh
+          <br />
+          Kahar
+        </h1>
+
+        {/* =================================================
+            ROLE
+           ================================================= */}
+
+        <div
+          style={{
+            marginTop: "24px",
+
+            fontSize:
+              "clamp(9px, 1vw, 12px)",
+
+            fontWeight: 400,
+
+            letterSpacing:
+              "0.42em",
+
+            color:
+              "rgba(215,181,109,0.9)",
+
+            textTransform:
+              "uppercase",
+          }}
+        >
+          Full Stack Developer
+        </div>
+
+        {/* =================================================
+            DIVIDER
+           ================================================= */}
+
+        <div
+          style={{
+            width: "100%",
+
+            maxWidth: "360px",
+
+            height: "1px",
+
+            marginTop: "22px",
+
+            background:
+              "linear-gradient(" +
+              "90deg," +
+              "rgba(241,238,231,0.25)," +
+              "transparent" +
+              ")",
+          }}
+        />
+
+        {/* =================================================
+            TAGLINE
+           ================================================= */}
+
+        <p
+          style={{
+            fontFamily:
+              "'Jost', sans-serif",
+
+            fontSize:
+              "clamp(12px, 1.15vw, 15px)",
+
+            fontWeight: 300,
+
+            lineHeight: 1.7,
+
+            margin:
+              "18px 0 0",
+
+            maxWidth: "330px",
+
+            color:
+              "rgba(241,238,231,0.55)",
+          }}
+        >
+          I build modern web experiences
+          <br />
+          that feel alive.
+        </p>
+
+        {/* =================================================
+            SCROLL CTA
+           ================================================= */}
+
+        <div
+          style={{
+            marginTop: "42px",
+
+            display: "flex",
+
+            alignItems: "center",
+
+            gap: "16px",
+
+            animation:
+              "scrollIndicatorBounce 2.5s ease-in-out infinite",
+          }}
+        >
+          {/* Mouse */}
+
+          <div
+            style={{
+              width: "22px",
+              height: "34px",
+
+              borderRadius: "12px",
+
+              border:
+                "1px solid rgba(241,238,231,0.38)",
+
+              position: "relative",
+
+              display: "flex",
+
+              justifyContent:
+                "center",
+            }}
+          >
+            <div
+              style={{
+                width: "3px",
+                height: "7px",
+
+                borderRadius: "2px",
+
+                background:
+                  "rgba(215,181,109,0.8)",
+
+                marginTop: "7px",
+
+                animation:
+                  "subtlePulse 2s ease-in-out infinite",
+              }}
+            />
+          </div>
+
+          <span
+            style={{
+              fontSize: "8px",
+
+              fontWeight: 300,
+
+              letterSpacing:
+                "0.35em",
+
+              color:
+                "rgba(241,238,231,0.42)",
+
+              textTransform:
+                "uppercase",
+            }}
+          >
+            Scroll to begin
+          </span>
+        </div>
+      </div>
+
+      {/* =====================================================
+          SMALL LOCATION / WORLD MARKER
+         ===================================================== */}
+
+      <div
+        style={{
+          position: "absolute",
+
+          right:
+            "clamp(24px, 4vw, 60px)",
+
+          bottom:
+            "clamp(24px, 4vw, 50px)",
+
+          display: "flex",
+
+          alignItems: "center",
+
+          gap: "10px",
+
+          opacity: 0.55,
+        }}
+      >
+        <span
+          style={{
+            width: "5px",
+            height: "5px",
+
+            borderRadius: "50%",
+
+            background:
+              "#d7b56d",
+
+            boxShadow:
+              "0 0 10px rgba(215,181,109,0.5)",
+          }}
+        />
+
+        <span
+          style={{
+            fontSize: "7px",
+
+            letterSpacing:
+              "0.35em",
+
+            textTransform:
+              "uppercase",
+
+            color:
+              "rgba(241,238,231,0.4)",
+          }}
+        >
+          The Nordic Journey · 01
         </span>
       </div>
     </div>

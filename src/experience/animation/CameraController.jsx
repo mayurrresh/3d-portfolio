@@ -5,81 +5,140 @@ import * as THREE from "three";
 /*
   CINEMATIC CAMERA JOURNEY
 
-  The arrow travels straight.
-  The camera independently sweeps around the journey
-  to create the cinematic movement.
+  The arrow travels essentially straight.
+  The camera stays low and close to the journey,
+  while making controlled cinematic side-to-side movements.
 */
 
 const cameraCurve = new THREE.CatmullRomCurve3([
-  // START
-  new THREE.Vector3(0, 3.5, 12),
+  // =====================================================
+  // HERO — close to arrow
+  // =====================================================
 
-  // Opening forest
-  new THREE.Vector3(-3.5, 3.8, -5),
+  new THREE.Vector3(0, 2.35, 11.5),
 
-  // About
-  new THREE.Vector3(3.5, 4.0, -20),
+  // =====================================================
+  // OPENING FOREST
+  // =====================================================
 
-  // Skills / first major landmark
-  new THREE.Vector3(-4.0, 4.2, -38),
+  new THREE.Vector3(-1.8, 2.45, -4),
 
-  // Projects
-  new THREE.Vector3(3.5, 4.4, -58),
+  // =====================================================
+  // ABOUT
+  // =====================================================
 
-  // Deeper world
-  new THREE.Vector3(-3.0, 4.5, -78),
+  new THREE.Vector3(2.2, 2.55, -20),
 
-  // Final approach
-  new THREE.Vector3(2.0, 4.3, -95),
+  // =====================================================
+  // SKILLS
+  // =====================================================
 
-  // Target approach
-  new THREE.Vector3(0, 4.0, -101),
+  new THREE.Vector3(-2.5, 2.7, -38),
+
+  // =====================================================
+  // PROJECTS
+  // =====================================================
+
+  new THREE.Vector3(2.8, 2.85, -58),
+
+  // =====================================================
+  // DEEPER JOURNEY
+  // =====================================================
+
+  new THREE.Vector3(-2.0, 3.0, -78),
+
+  // =====================================================
+  // FINAL APPROACH
+  // =====================================================
+
+  new THREE.Vector3(1.5, 3.0, -95),
+
+  // =====================================================
+  // TARGET
+  // =====================================================
+
+  new THREE.Vector3(0, 2.8, -101),
 ]);
+
 
 const lookAtCurve = new THREE.CatmullRomCurve3([
-  // START
-  new THREE.Vector3(0, 1.0, 0),
+  // =====================================================
+  // HERO
+  // =====================================================
 
-  // Forest
-  new THREE.Vector3(0, 1.2, -10),
+  new THREE.Vector3(0, 1.8, -18),
 
-  // About
-  new THREE.Vector3(0, 1.3, -25),
+  // =====================================================
+  // OPENING FOREST
+  // =====================================================
 
-  // Skills
-  new THREE.Vector3(0, 1.4, -42),
+  new THREE.Vector3(0, 1.7, -10),
 
-  // Projects
-  new THREE.Vector3(0, 1.5, -62),
+  // =====================================================
+  // ABOUT
+  // =====================================================
 
-  // Deeper journey
-  new THREE.Vector3(0, 1.6, -82),
+  new THREE.Vector3(0, 1.7, -25),
 
-  // Final approach
-  new THREE.Vector3(0, 1.7, -98),
+  // =====================================================
+  // SKILLS
+  // =====================================================
 
-  // Target
-  new THREE.Vector3(0, 1.8, -110),
+  new THREE.Vector3(0, 1.8, -42),
+
+  // =====================================================
+  // PROJECTS
+  // =====================================================
+
+  new THREE.Vector3(0, 1.9, -62),
+
+  // =====================================================
+  // DEEPER JOURNEY
+  // =====================================================
+
+  new THREE.Vector3(0, 2.0, -82),
+
+  // =====================================================
+  // FINAL APPROACH
+  // =====================================================
+
+  new THREE.Vector3(0, 2.0, -98),
+
+  // =====================================================
+  // TARGET
+  // =====================================================
+
+  new THREE.Vector3(0, 2.0, -110),
 ]);
 
-export default function CameraController({ progress = 0 }) {
+
+export default function CameraController({
+  progress = 0,
+}) {
   const { camera } = useThree();
 
   const currentPosition = useRef(
-    new THREE.Vector3(0, 3.5, 12)
+    new THREE.Vector3(0, 2.35, 11.5)
   );
 
   const currentLookTarget = useRef(
-    new THREE.Vector3(0, 1.0, 0)
+    new THREE.Vector3(0, 1.8, -3)
   );
 
   useFrame(() => {
-    const t = THREE.MathUtils.clamp(progress, 0, 1);
+    const t = THREE.MathUtils.clamp(
+      progress,
+      0,
+      1
+    );
 
-    const desiredPosition = cameraCurve.getPointAt(t);
-    const desiredLookTarget = lookAtCurve.getPointAt(t);
+    const desiredPosition =
+      cameraCurve.getPointAt(t);
 
-    // Smooth cinematic camera movement
+    const desiredLookTarget =
+      lookAtCurve.getPointAt(t);
+
+    // Smooth camera movement
     currentPosition.current.lerp(
       desiredPosition,
       0.08

@@ -4,7 +4,6 @@ import * as THREE from "three";
 
 import { flightCurve } from "./flightpath";
 
-// Reusable vectors to avoid allocation per frame
 const currentPos = new THREE.Vector3();
 const currentTangent = new THREE.Vector3();
 const lookAheadPos = new THREE.Vector3();
@@ -12,7 +11,11 @@ const upVector = new THREE.Vector3(0, 1, 0);
 
 export default function ArrowController({ progress = 0 }) {
   const arrowRef = useRef();
-  const smoothPos = useRef(new THREE.Vector3(0, 1.3, 11)); 
+
+  const smoothPos = useRef(
+    new THREE.Vector3(0, 1.2, 10)
+  );
+
   const smoothQuat = useRef(new THREE.Quaternion());
   const targetQuat = useRef(new THREE.Quaternion());
   const lookMatrix = useRef(new THREE.Matrix4());
@@ -22,24 +25,38 @@ export default function ArrowController({ progress = 0 }) {
 
     const t = THREE.MathUtils.clamp(progress, 0, 0.9999);
 
-    // ─── Get arrow position and direction ───
     flightCurve.getPointAt(t, currentPos);
     flightCurve.getTangentAt(t, currentTangent);
     currentTangent.normalize();
 
-    // ─── Keep the TIP on the flight path ───
-    // Arrow tip is approximately 2.025 units ahead of its origin.
-    const arrowLengthToTip = 2.025;
+    /*
+      The arrow model points along local -Z.
+      Keep the arrowhead toward the target.
+    */
+
+    const arrowLengthToTip = 0.75;
 
     const adjustedPosition = currentPos
       .clone()
-      .addScaledVector(currentTangent, -arrowLengthToTip);
+      .addScaledVector(
+        currentTangent,
+        -arrowLengthToTip
+      );
 
-    // Smooth position
-    smoothPos.current.lerp(adjustedPosition, 0.12);
-    arrowRef.current.position.copy(smoothPos.current);
+    adjustedPosition.y -= 0.35;
 
-    // ─── Rotation ───
+    smoothPos.current.lerp(
+      adjustedPosition,
+      0.14
+    );
+
+    arrowRef.current.position.copy(
+      smoothPos.current
+    );
+
+    /*
+      Look in the direction of travel.
+    */
     lookAheadPos
       .copy(smoothPos.current)
       .add(currentTangent);
@@ -56,58 +73,65 @@ export default function ArrowController({ progress = 0 }) {
 
     smoothQuat.current.slerp(
       targetQuat.current,
-      0.1
+      0.12
     );
 
     arrowRef.current.quaternion.copy(
       smoothQuat.current
     );
-
-    // ─── Subtle wobble ───
-    arrowRef.current.rotation.z +=
-      Math.sin(t * Math.PI * 4) * 0.015;
-
-    arrowRef.current.rotation.x +=
-      Math.sin(t * Math.PI * 3 + 1) * 0.01;
+    arrowRef.current.rotateX(-0.08);
   });
 
   return (
     <group ref={arrowRef}>
-      {/* Shaft — oriented along Z axis so it follows lookAt correctly */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
+
+      {/* Arrow shaft */}
+      <mesh
+        rotation={[Math.PI / 2, 0, 0]}
+        castShadow
+      >
         <cylinderGeometry
-          args={[0.045, 0.045, 3.2, 8]}
+          args={[0.025, 0.025, 2.5, 8]}
         />
+
         <meshStandardMaterial
-          color="#6b321d"
+          color="#3b2418"
+          roughness={0.85}
+        />
+      </mesh>
+
+      {/* ARROWHEAD — points toward target */}
+      <mesh
+        position={[0, 0, -1.42]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        castShadow
+      >
+        <coneGeometry
+          args={[0.10, 0.38, 6]}
+        />
+
+        <meshStandardMaterial
+          color="#b9b1a2"
+          metalness={0.85}
+          roughness={0.25}
+        />
+      </mesh>
+
+      {/* FLETCHING — stays toward camera */}
+      <mesh
+        position={[0, 0, 1.22]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <coneGeometry
+          args={[0.11, 0.25, 4]}
+        />
+
+        <meshStandardMaterial
+          color="#4c1715"
           roughness={0.8}
         />
       </mesh>
 
-      {/* Arrow head — at the front (-Z direction in local space) */}
-      <mesh
-        position={[0, 0, -1.75]}
-        rotation={[-Math.PI / 2, 0, 0]}
-      >
-        <coneGeometry args={[0.18, 0.55, 6]} />
-        <meshStandardMaterial
-          color="#c5b49a"
-          metalness={0.7}
-          roughness={0.3}
-        />
-      </mesh>
-
-      {/* Fletching — at the back (+Z direction in local space) */}
-      <mesh
-        position={[0, 0, 1.65]}
-        rotation={[Math.PI / 2, 0, 0]}
-      >
-        <coneGeometry args={[0.2, 0.4, 4]} />
-        <meshStandardMaterial
-          color="#5a1515"
-          roughness={0.7}
-        />
-      </mesh>
     </group>
   );
 }

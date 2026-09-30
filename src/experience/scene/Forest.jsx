@@ -1,173 +1,54 @@
 import PineTree from "../models/PineTree";
 
 const trees = [
-  // =========================================================
-  // ZONE 1 — OPENING FOREST
-  // =========================================================
+  // HERO / CAMP
+  { position: [-7.5, -1.5, -5], scale: 1.0, rotation: 0.2 },
+  { position: [-9.5, -1.5, -9], scale: 0.82, rotation: -0.35 },
+  { position: [-11.5, -1.5, -14], scale: 0.95, rotation: 0.45 },
+  { position: [-8.5, -1.5, -18], scale: 0.72, rotation: -0.25 },
 
-  // Left
-  {
-    position: [-7, -1.5, -6],
-    scale: 0.85,
-    rotation: 0.25,
-  },
-  {
-    position: [-10, -1.5, -12],
-    scale: 0.7,
-    rotation: -0.35,
-  },
-  {
-    position: [-8, -1.5, -19],
-    scale: 0.8,
-    rotation: 0.5,
-  },
+  { position: [7.5, -1.5, -5], scale: 0.95, rotation: -0.2 },
+  { position: [9.5, -1.5, -9], scale: 0.82, rotation: 0.35 },
+  { position: [11.5, -1.5, -14], scale: 1.0, rotation: -0.45 },
+  { position: [8.5, -1.5, -18], scale: 0.72, rotation: 0.25 },
 
-  // Right
-  {
-    position: [7, -1.5, -7],
-    scale: 0.8,
-    rotation: -0.25,
-  },
-  {
-    position: [10, -1.5, -13],
-    scale: 0.7,
-    rotation: 0.35,
-  },
-  {
-    position: [8, -1.5, -20],
-    scale: 0.85,
-    rotation: -0.45,
-  },
+  // FOREST
+  { position: [-10.5, -1.5, -24], scale: 0.92, rotation: 0.25 },
+  { position: [-13.0, -1.5, -29], scale: 0.72, rotation: -0.3 },
+  { position: [-9.0, -1.5, -34], scale: 0.82, rotation: 0.4 },
+  { position: [-13.5, -1.5, -40], scale: 0.95, rotation: -0.2 },
 
-  // =========================================================
-  // ZONE 2 — ABOUT / FIRST JOURNEY SECTION
-  // =========================================================
+  { position: [10.5, -1.5, -24], scale: 0.9, rotation: -0.25 },
+  { position: [13.0, -1.5, -29], scale: 0.72, rotation: 0.3 },
+  { position: [9.0, -1.5, -34], scale: 0.82, rotation: -0.4 },
+  { position: [13.5, -1.5, -40], scale: 0.95, rotation: 0.2 },
 
-  // Left
-  {
-    position: [-11, -1.5, -27],
-    scale: 0.65,
-    rotation: -0.2,
-  },
-  {
-    position: [-7, -1.5, -32],
-    scale: 0.55,
-    rotation: 0.4,
-  },
-  {
-    position: [-12, -1.5, -38],
-    scale: 0.75,
-    rotation: -0.3,
-  },
+  // DEEP FOREST
+  { position: [-11.5, -1.5, -46], scale: 1.0, rotation: 0.3 },
+  { position: [-8.5, -1.5, -51], scale: 0.72, rotation: -0.35 },
+  { position: [-14, -1.5, -57], scale: 0.9, rotation: 0.2 },
+  { position: [-10, -1.5, -63], scale: 0.78, rotation: -0.4 },
 
-  // Right
-  {
-    position: [11, -1.5, -28],
-    scale: 0.65,
-    rotation: 0.2,
-  },
-  {
-    position: [7, -1.5, -33],
-    scale: 0.55,
-    rotation: -0.35,
-  },
-  {
-    position: [12, -1.5, -39],
-    scale: 0.7,
-    rotation: 0.3,
-  },
+  { position: [11.5, -1.5, -46], scale: 0.98, rotation: -0.3 },
+  { position: [8.5, -1.5, -51], scale: 0.72, rotation: 0.35 },
+  { position: [14, -1.5, -57], scale: 0.9, rotation: -0.2 },
+  { position: [10, -1.5, -63], scale: 0.78, rotation: 0.4 },
 
-  // =========================================================
-  // ZONE 3 — SKILLS / DEEP FOREST
-  // =========================================================
+  // FAR FOREST
+  { position: [-13, -1.5, -70], scale: 0.85, rotation: 0.25 },
+  { position: [-9, -1.5, -76], scale: 0.65, rotation: -0.3 },
+  { position: [-12, -1.5, -82], scale: 0.78, rotation: 0.4 },
 
-  // Left
-  {
-    position: [-10, -1.5, -48],
-    scale: 0.8,
-    rotation: 0.25,
-  },
-  {
-    position: [-13, -1.5, -55],
-    scale: 0.65,
-    rotation: -0.4,
-  },
-  {
-    position: [-8, -1.5, -62],
-    scale: 0.75,
-    rotation: 0.35,
-  },
+  { position: [13, -1.5, -70], scale: 0.85, rotation: -0.25 },
+  { position: [9, -1.5, -76], scale: 0.65, rotation: 0.3 },
+  { position: [12, -1.5, -82], scale: 0.78, rotation: -0.4 },
 
-  // Right
-  {
-    position: [10, -1.5, -49],
-    scale: 0.75,
-    rotation: -0.25,
-  },
-  {
-    position: [13, -1.5, -56],
-    scale: 0.65,
-    rotation: 0.4,
-  },
-  {
-    position: [8, -1.5, -63],
-    scale: 0.8,
-    rotation: -0.3,
-  },
+  // DISTANT SILHOUETTES
+  { position: [-16, -1.5, -90], scale: 0.72, rotation: 0.2 },
+  { position: [-11, -1.5, -96], scale: 0.58, rotation: -0.3 },
 
-  // =========================================================
-  // ZONE 4 — PROJECTS / LATE JOURNEY
-  // =========================================================
-
-  // Left
-  {
-    position: [-12, -1.5, -72],
-    scale: 0.85,
-    rotation: -0.2,
-  },
-  {
-    position: [-8, -1.5, -79],
-    scale: 0.65,
-    rotation: 0.35,
-  },
-  {
-    position: [-13, -1.5, -87],
-    scale: 0.75,
-    rotation: -0.3,
-  },
-
-  // Right
-  {
-    position: [12, -1.5, -73],
-    scale: 0.8,
-    rotation: 0.25,
-  },
-  {
-    position: [8, -1.5, -80],
-    scale: 0.65,
-    rotation: -0.4,
-  },
-  {
-    position: [13, -1.5, -88],
-    scale: 0.75,
-    rotation: 0.3,
-  },
-
-  // =========================================================
-  // ZONE 5 — FINAL APPROACH
-  // Sparse trees so the target can become visible.
-  // =========================================================
-
-  {
-    position: [-11, -1.5, -96],
-    scale: 0.65,
-    rotation: 0.2,
-  },
-  {
-    position: [11, -1.5, -97],
-    scale: 0.65,
-    rotation: -0.25,
-  },
+  { position: [16, -1.5, -90], scale: 0.72, rotation: -0.2 },
+  { position: [11, -1.5, -96], scale: 0.58, rotation: 0.3 },
 ];
 
 export default function Forest() {

@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Sky } from "@react-three/drei";
 import { useScrollProgress } from "../hooks/useScrollProgress";
-
+import Environment from "./scene/Environment";
+import Lighting from "./scene/Lighting";
 import ArrowController from "./animation/ArrowController";
 import CameraController from "./animation/CameraController";
-
 import Mountains from "./scene/Mountains";
 import Forest from "./scene/Forest";
 import Particles from "./scene/Particles";
-
 import ArcheryCamp from "./world/ArcheryCamp";
 import Path from "./world/Path";
 import Rocks from "./world/Rocks";
 import Target from "./world/Target";
-
 import LoadingScreen from "./overlay/LoadingScreen";
 import JourneyHUD from "./overlay/JourneyHUD";
 import AboutPanel from "./overlay/AboutPanel";
@@ -24,49 +21,48 @@ import ContactPanel from "./overlay/ContactPanel";
 import HeroPanel from "./overlay/HeroPanel";
 import Sunlight from "../components/Sunlight";
 import SkillMonument from "./world/SkillMonument";
+import FinalPanel from "./overlay/FinalPanel";
+import Terrain from "./scene/Terrain";
 
 function Ground() {
   return (
     <group>
-      {/* Main terrain */}
+      {/* Main snowy world */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -1.5, -50]}
+        position={[0, -1.5, -75]}
         receiveShadow
       >
-        <planeGeometry args={[80, 125, 1, 1]} />
-
+        <planeGeometry args={[120, 180, 1, 1]} />
         <meshStandardMaterial
-          color="#747877"
+          color="#d8d4c8"
           roughness={1}
           metalness={0}
         />
       </mesh>
 
-      {/* Left terrain shelf */}
+      {/* Left snow bank */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[-18, -1.42, -50]}
+        position={[-25, -1.47, -75]}
         receiveShadow
       >
-        <planeGeometry args={[25, 125]} />
-
+        <planeGeometry args={[35, 180]} />
         <meshStandardMaterial
-          color="#686d6b"
+          color="#c9c5b9"
           roughness={1}
         />
       </mesh>
 
-      {/* Right terrain shelf */}
+      {/* Right snow bank */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[18, -1.42, -50]}
+        position={[25, -1.47, -75]}
         receiveShadow
       >
-        <planeGeometry args={[25, 125]} />
-
+        <planeGeometry args={[35, 180]} />
         <meshStandardMaterial
-          color="#686d6b"
+          color="#c9c5b9"
           roughness={1}
         />
       </mesh>
@@ -108,26 +104,17 @@ export default function Experience() {
         }}
       >
         {/* Atmosphere */}
-        <Sky
-          distance={450000}
-          sunPosition={[8, 5, 6]}
-          inclination={0.48}
-          azimuth={0.25}
-        />
-
-        <fog
-          attach="fog"
-          args={["#b9c7d0", 20, 100]}
-        />
+        <Environment />
 
         {/* World */}
-        <Mountains />
+        <Mountains progress={progress} />
         <Forest />
         <Rocks />
+        <Terrain />
         <Path />
         <ArcheryCamp />
         <SkillMonument />
-        <Target />
+        {progress > 0.88 && <Target progress={progress} />}
 
         {/* Atmospheric particles */}
         <Particles />
@@ -139,13 +126,7 @@ export default function Experience() {
         <CameraController progress={progress} />
 
         {/* Lighting */}
-        <ambientLight intensity={0.5} />
-
-        <directionalLight
-          position={[8, 12, 6]}
-          intensity={2}
-          castShadow
-        />
+        <Lighting />
 
         {/* Ground */}
         <Ground />
@@ -182,6 +163,10 @@ export default function Experience() {
       <ContactPanel
         progress={progress}
         side="right"
+      />
+
+      <FinalPanel
+        progress={progress}
       />
     </div>
   );
